@@ -132,9 +132,9 @@ const OSISorter = () => {
 
         <p className="max-w-xl text-gray-400">
           Sort the blocks! Click one block to select it, then click another to
-          swap positions. Each row must match the OSI Model layer label on the
-          left. Please note that Layer 7 is the top row and Layer 1 is the
-          bottom row. Remember... All People Sometimes Need Data Processing!
+          swap positions. Each row must match its respective OSI Model layer.
+          Please note that Layer 7 is the top row and Layer 1 is the bottom row.
+          Remember... All People Sometimes Need Data Processing!
         </p>
       </div>
 

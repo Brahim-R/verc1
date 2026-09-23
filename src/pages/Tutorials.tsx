@@ -1,3 +1,5 @@
+import { motion } from 'framer-motion'
+
 const Tutorials = () => {
   return (
     <div className="mx-auto max-w-5xl px-4">
@@ -5,9 +7,10 @@ const Tutorials = () => {
 
       <div className="space-y-6">
         {[1, 2, 3].map((item) => (
-          <div
+          <motion.div
             key={item}
-            className="flex cursor-pointer flex-col gap-6 rounded-xl border border-gray-100 bg-white p-6 transition-colors hover:border-indigo-500 dark:border-gray-700 dark:bg-gray-800 dark:hover:border-indigo-500 md:flex-row"
+            whileHover={{ y: -5 }}
+            className="flex cursor-pointer flex-col gap-6 rounded-xl border border-gray-100 bg-white p-6 shadow-sm transition-all duration-300 hover:border-indigo-500 hover:shadow-lg dark:border-gray-700 dark:bg-gray-800 dark:hover:border-indigo-500 md:flex-row"
           >
             <div className="flex size-12 shrink-0 items-center justify-center rounded-lg bg-indigo-100 text-xl font-bold text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400">
               {item}
@@ -28,7 +31,7 @@ const Tutorials = () => {
                 </span>
               </div>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
     </div>
