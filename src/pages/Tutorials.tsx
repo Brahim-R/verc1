@@ -7,7 +7,7 @@ const Tutorials = () => {
         {[1, 2, 3].map((item) => (
           <div
             key={item}
-            className="flex cursor-pointer flex-col gap-6 rounded-xl border border-gray-100 bg-white p-6 transition-colors hover:border-indigo-500 md:flex-row dark:border-gray-700 dark:bg-gray-800 dark:hover:border-indigo-500"
+            className="flex cursor-pointer flex-col gap-6 rounded-xl border border-gray-100 bg-white p-6 transition-colors hover:border-indigo-500 dark:border-gray-700 dark:bg-gray-800 dark:hover:border-indigo-500 md:flex-row"
           >
             <div className="flex size-12 shrink-0 items-center justify-center rounded-lg bg-indigo-100 text-xl font-bold text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400">
               {item}

@@ -10,7 +10,7 @@ const Home = () => {
           animate={{ opacity: 1, y: 0 }}
           className="mb-6 bg-gradient-to-r from-blue-500 to-teal-400 bg-clip-text text-5xl font-extrabold tracking-tight text-transparent md:text-7xl"
         >
-          Creative Developer
+          Welcome to the jungle big boy
         </motion.h1>
         <motion.p
           initial={{ opacity: 0, y: 20 }}
@@ -34,11 +34,12 @@ const Home = () => {
               key={item}
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
+              whileHover={{ y: -5 }}
               viewport={{ once: true }}
-              className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm transition-shadow hover:shadow-md dark:border-gray-700 dark:bg-gray-800"
+              className="group overflow-hidden rounded-2xl border border-gray-100 bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-lg dark:border-gray-700 dark:bg-gray-800"
             >
               <div className="flex flex-col gap-6 md:flex-row">
-                <div className="h-32 w-full shrink-0 rounded-lg bg-gray-200 md:w-48 dark:bg-gray-700"></div>
+                <div className="h-32 w-full shrink-0 rounded-lg bg-gray-200 transition-colors group-hover:bg-indigo-50 dark:bg-gray-700 dark:group-hover:bg-gray-700/50 md:w-48"></div>
                 <div>
                   <div className="mb-2 text-sm font-medium text-indigo-500">
                     Update • Dec {20 + item}, 2025

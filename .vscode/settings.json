@@ -4,5 +4,6 @@
   },
   "files.associations": {
     "*.css": "tailwindcss"
-  }
+  },
+  "glassit.alpha": 253
 }

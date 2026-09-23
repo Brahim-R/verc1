@@ -1,4 +1,26 @@
 import { useEffect, useRef, useState } from 'react'
+import type * as PIXI from 'pixi.js'
+
+declare global {
+  interface Window {
+    PIXI: typeof PIXI
+  }
+}
+
+type CardData = {
+  id: number
+  pairId: string
+  content: string
+}
+
+type Card = PIXI.Container & {
+  isFlipped: boolean
+  isMatched: boolean
+  cardData: CardData
+  flip: () => void
+  unflip: () => void
+  setMatched: () => void
+}
 
 const TerraformMatcher = () => {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -6,7 +28,7 @@ const TerraformMatcher = () => {
 
   useEffect(() => {
     if (!containerRef.current) return
-    const PIXI = (window as any).PIXI
+    const PIXI = window.PIXI
     if (!PIXI) return
 
     // Constants
@@ -22,14 +44,13 @@ const TerraformMatcher = () => {
       backgroundAlpha: 0,
       antialias: true
     })
-    containerRef.current.appendChild(app.view)
+    containerRef.current.appendChild(app.view as unknown as Node)
 
     // Game State
-    let cards: any[] = []
-    let flippedCards: any[] = []
+    const cards: Card[] = []
+    let flippedCards: Card[] = []
     let locked = false
     let matches = 0
-    let moves = 0
 
     // Data
     const concepts = [
@@ -41,8 +62,8 @@ const TerraformMatcher = () => {
       { id: 'apply', text: 'terraform apply', match: 'Execute Changes' }
     ]
 
-    const createCard = (data: any, x: number, y: number) => {
-      const container = new PIXI.Container()
+    const createCard = (data: CardData, x: number, y: number) => {
+      const container = new PIXI.Container() as Card
       container.x = x
       container.y = y
 
@@ -121,8 +142,8 @@ const TerraformMatcher = () => {
 
     const initGame = () => {
       // Prepare deck
-      const deck: any[] = []
-      concepts.forEach(c => {
+      const deck: CardData[] = []
+      concepts.forEach((c) => {
         deck.push({ id: Math.random(), pairId: c.id, content: c.text })
         deck.push({ id: Math.random(), pairId: c.id, content: c.match })
       })
@@ -132,7 +153,11 @@ const TerraformMatcher = () => {
       deck.forEach((data, i) => {
         const col = i % COLS
         const row = Math.floor(i / COLS)
-        const card = createCard(data, GAP + col * (CARD_WIDTH + GAP), GAP + row * (CARD_HEIGHT + GAP))
+        const card = createCard(
+          data,
+          GAP + col * (CARD_WIDTH + GAP),
+          GAP + row * (CARD_HEIGHT + GAP)
+        )
 
         card.on('pointerdown', () => onCardClick(card))
 
@@ -141,7 +166,7 @@ const TerraformMatcher = () => {
       })
     }
 
-    const onCardClick = (card: any) => {
+    const onCardClick = (card: Card) => {
       if (locked || card.isFlipped || card.isMatched) return
 
       card.flip()
@@ -149,8 +174,7 @@ const TerraformMatcher = () => {
 
       if (flippedCards.length === 2) {
         locked = true
-        moves++
-        setGameStats(prev => ({ ...prev, moves: prev.moves + 1 }))
+        setGameStats((prev) => ({ ...prev, moves: prev.moves + 1 }))
         checkForMatch()
       }
     }
@@ -163,14 +187,14 @@ const TerraformMatcher = () => {
         c1.setMatched()
         c2.setMatched()
         matches++
-        setGameStats(prev => ({ ...prev, matches: prev.matches + 1 }))
+        setGameStats((prev) => ({ ...prev, matches: prev.matches + 1 }))
         flippedCards = []
         locked = false
-        spawnParticles(c1.x + CARD_WIDTH/2, c1.y + CARD_HEIGHT/2)
-        spawnParticles(c2.x + CARD_WIDTH/2, c2.y + CARD_HEIGHT/2)
+        spawnParticles(c1.x + CARD_WIDTH / 2, c1.y + CARD_HEIGHT / 2)
+        spawnParticles(c2.x + CARD_WIDTH / 2, c2.y + CARD_HEIGHT / 2)
 
         if (matches === concepts.length) {
-            showWinText()
+          showWinText()
         }
       } else {
         // No match
@@ -184,51 +208,53 @@ const TerraformMatcher = () => {
     }
 
     const spawnParticles = (x: number, y: number) => {
-        for (let i = 0; i < 20; i++) {
-            const circle = new PIXI.Graphics()
-            circle.beginFill([0x10b981, 0x6366f1, 0xf59e0b][Math.floor(Math.random() * 3)])
-            circle.drawCircle(0, 0, 4)
-            circle.endFill()
-            circle.x = x
-            circle.y = y
-            app.stage.addChild(circle)
+      for (let i = 0; i < 20; i++) {
+        const circle = new PIXI.Graphics()
+        circle.beginFill(
+          [0x10b981, 0x6366f1, 0xf59e0b][Math.floor(Math.random() * 3)]
+        )
+        circle.drawCircle(0, 0, 4)
+        circle.endFill()
+        circle.x = x
+        circle.y = y
+        app.stage.addChild(circle)
 
-            const vx = (Math.random() - 0.5) * 10
-            const vy = (Math.random() - 1) * 10
+        const vx = (Math.random() - 0.5) * 10
+        const vy = (Math.random() - 1) * 10
 
-            let life = 60
-            const animate = () => {
-                life--
-                if (life <= 0) {
-                    app.ticker.remove(animate)
-                    circle.destroy()
-                    return
-                }
-                circle.x += vx
-                circle.y += vy + (60 - life) * 0.1 // gravity
-                circle.alpha = life / 60
-            }
-            app.ticker.add(animate)
+        let life = 60
+        const animate = () => {
+          life--
+          if (life <= 0) {
+            app.ticker.remove(animate)
+            circle.destroy()
+            return
+          }
+          circle.x += vx
+          circle.y += vy + (60 - life) * 0.1 // gravity
+          circle.alpha = life / 60
         }
+        app.ticker.add(animate)
+      }
     }
 
     const showWinText = () => {
-        const style = new PIXI.TextStyle({
-            fontFamily: 'Inter',
-            fontSize: 48,
-            fontWeight: '900',
-            fill: ['#4ade80', '#3b82f6'],
-            dropShadow: true,
-            dropShadowColor: '#000000',
-            dropShadowBlur: 4,
-            dropShadowAngle: Math.PI / 6,
-            dropShadowDistance: 6
-        })
-        const text = new PIXI.Text('Level Complete!', style)
-        text.anchor.set(0.5)
-        text.x = app.screen.width / 2
-        text.y = app.screen.height / 2
-        app.stage.addChild(text)
+      const style = new PIXI.TextStyle({
+        fontFamily: 'Inter',
+        fontSize: 48,
+        fontWeight: '900',
+        fill: ['#4ade80', '#3b82f6'],
+        dropShadow: true,
+        dropShadowColor: '#000000',
+        dropShadowBlur: 4,
+        dropShadowAngle: Math.PI / 6,
+        dropShadowDistance: 6
+      })
+      const text = new PIXI.Text('Level Complete!', style)
+      text.anchor.set(0.5)
+      text.x = app.screen.width / 2
+      text.y = app.screen.height / 2
+      app.stage.addChild(text)
     }
 
     initGame()
@@ -253,7 +279,10 @@ const TerraformMatcher = () => {
         </button>
       </div>
 
-      <div ref={containerRef} className="overflow-hidden rounded-2xl border-4 border-indigo-500/30 shadow-2xl" />
+      <div
+        ref={containerRef}
+        className="overflow-hidden rounded-2xl border-4 border-indigo-500/30 shadow-2xl"
+      />
     </div>
   )
 }

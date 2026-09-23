@@ -1,7 +1,9 @@
-import { Link, Outlet } from 'react-router-dom'
+import { Link, Outlet, useLocation } from 'react-router-dom'
 import { Menu, X, Gamepad2, Home, FolderOpen, BookOpen } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { getRandomGradient } from '../utils/gradients'
+import ThemeToggle from '../components/ThemeToggle'
+import { useTheme } from '../hooks/useTheme'
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -20,37 +22,41 @@ const Navigation = () => {
           <div className="flex">
             <Link to="/" className="flex shrink-0 items-center">
               <span className="bg-gradient-to-r from-indigo-500 to-purple-600 bg-clip-text text-2xl font-bold text-transparent">
-                Portfolio
+                R Brahim
               </span>
             </Link>
           </div>
 
-          {/* Desktop Menu */}
-          <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-            {navItems.map((item) => (
-              <Link
-                key={item.name}
-                to={item.path}
-                className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 transition-colors duration-200 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-              >
-                <item.icon className="mr-2 size-4" />
-                {item.name}
-              </Link>
-            ))}
-          </div>
+          <div className="flex items-center gap-3 sm:gap-4">
+            {/* Desktop Menu */}
+            <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
+              {navItems.map((item) => (
+                <Link
+                  key={item.name}
+                  to={item.path}
+                  className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 transition-colors duration-200 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+                >
+                  <item.icon className="mr-2 size-4" />
+                  {item.name}
+                </Link>
+              ))}
+            </div>
 
-          {/* Mobile menu button */}
-          <div className="flex items-center sm:hidden">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
-            >
-              {isOpen ? (
-                <X className="block size-6" />
-              ) : (
-                <Menu className="block size-6" />
-              )}
-            </button>
+            <ThemeToggle />
+
+            {/* Mobile menu button */}
+            <div className="flex items-center sm:hidden">
+              <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+              >
+                {isOpen ? (
+                  <X className="block size-6" />
+                ) : (
+                  <Menu className="block size-6" />
+                )}
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -91,23 +97,13 @@ const Footer = () => (
 )
 
 const MainLayout = () => {
-  const [background, setBackground] = useState({
-    name: '',
-    className: 'bg-gray-900',
-    style: {}
-  }) // Default to dark
+  const location = useLocation()
+  const { theme } = useTheme()
+  const [background, setBackground] = useState(() => getRandomGradient('dark')) // Default to dark
 
   useEffect(() => {
-    // Import dynamically or just rely on the file being there.
-    // Since we are in the same bundle, static import is fine but I need to add the import statement at the top.
-    // Wait, I can't add the import statement with replace_file_content if I target this block.
-    // I need to use multi_replace for imports + component body.
-    // Re-roll on mount just in case, or we can just rely on initial state.
-    // Since getRandomGradient is synchronous, initial state is fine.
-    // However, for SSR safety (if this were Next.js) we'd use useEffect, but this is Vite/React SPA.
-    // Just to be safe and ensure variety if component remounts:
-    setBackground(getRandomGradient())
-  }, [])
+    setBackground(getRandomGradient(theme))
+  }, [location.pathname, theme])
 
   return (
     <div className="flex min-h-screen flex-col font-sans text-gray-900 dark:text-gray-100">
