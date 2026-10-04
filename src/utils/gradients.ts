@@ -16,9 +16,9 @@ const themes: Record<
     name: 'Midnight Blue',
     colors: {
       dark: [
-        'rgba(2, 6, 23, 1)', // Base: slate-950
-        'rgba(30, 58, 138, 0.15)', // Faint Blue
-        'rgba(23, 37, 84, 0.1)' // Fainter Blue
+        'rgba(15, 23, 42, 1)', // Base: slate-900
+        'rgba(30, 58, 138, 0.2)', // Faint Blue
+        'rgba(23, 37, 84, 0.14)' // Fainter Blue
       ],
       light: [
         'rgba(250, 250, 250, 1)', // Base: off-white
@@ -31,9 +31,9 @@ const themes: Record<
     name: 'Deep Nebula',
     colors: {
       dark: [
-        'rgba(2, 6, 23, 1)',
-        'rgba(88, 28, 135, 0.15)', // Faint Purple
-        'rgba(76, 29, 149, 0.1)'
+        'rgba(15, 23, 42, 1)',
+        'rgba(88, 28, 135, 0.2)', // Faint Purple
+        'rgba(76, 29, 149, 0.14)'
       ],
       light: [
         'rgba(250, 250, 250, 1)',
@@ -46,9 +46,9 @@ const themes: Record<
     name: 'Abyssal Forest',
     colors: {
       dark: [
-        'rgba(2, 6, 23, 1)',
-        'rgba(6, 78, 59, 0.15)', // Faint Green
-        'rgba(20, 83, 45, 0.1)'
+        'rgba(15, 23, 42, 1)',
+        'rgba(6, 78, 59, 0.2)', // Faint Green
+        'rgba(20, 83, 45, 0.14)'
       ],
       light: [
         'rgba(250, 250, 250, 1)',
@@ -61,9 +61,9 @@ const themes: Record<
     name: 'Venomous Shadow',
     colors: {
       dark: [
-        'rgba(2, 6, 23, 1)',
-        'rgba(20, 83, 45, 0.15)', // Faint Emerald/Green
-        'rgba(63, 98, 18, 0.1)' // Faint Lime/Olive
+        'rgba(15, 23, 42, 1)',
+        'rgba(20, 83, 45, 0.2)', // Faint Emerald/Green
+        'rgba(63, 98, 18, 0.14)' // Faint Lime/Olive
       ],
       light: [
         'rgba(250, 250, 250, 1)',
@@ -76,9 +76,9 @@ const themes: Record<
     name: 'Crimson Void',
     colors: {
       dark: [
-        'rgba(2, 6, 23, 1)',
-        'rgba(127, 29, 29, 0.15)', // Faint Red
-        'rgba(153, 27, 27, 0.1)'
+        'rgba(15, 23, 42, 1)',
+        'rgba(127, 29, 29, 0.2)', // Faint Red
+        'rgba(153, 27, 27, 0.14)'
       ],
       light: [
         'rgba(250, 250, 250, 1)',
@@ -91,9 +91,9 @@ const themes: Record<
     name: 'Volcanic Ember',
     colors: {
       dark: [
-        'rgba(2, 6, 23, 1)',
-        'rgba(124, 45, 18, 0.15)', // Faint Orange
-        'rgba(154, 52, 18, 0.1)'
+        'rgba(15, 23, 42, 1)',
+        'rgba(124, 45, 18, 0.2)', // Faint Orange
+        'rgba(154, 52, 18, 0.14)'
       ],
       light: [
         'rgba(250, 250, 250, 1)',
